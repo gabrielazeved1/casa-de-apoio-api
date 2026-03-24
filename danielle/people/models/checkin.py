@@ -1,6 +1,7 @@
 from django.db import models
 from .base import BaseModel
 from .person import Person
+from django.core.exceptions import ValidationError
 
 
 class Checkin(BaseModel):
@@ -77,6 +78,21 @@ class Checkin(BaseModel):
             + " "
             + self.created_at.strftime("(Entrada em %d/%m/%Y %H:%M)")
         )
+
+    def clean(self):
+        super().clean()
+        # Melhoria 1: Garante que a lógica de negócio esteja no modelo
+        if self.active:
+            # Procura por outros check-ins ativos da mesma pessoa, excluindo o próprio objeto se for uma atualização
+            has_active_checkin = (
+                Checkin.objects.filter(person=self.person, active=True)
+                .exclude(pk=self.pk)
+                .exists()
+            )
+            if has_active_checkin:
+                raise ValidationError(
+                    {"person": "Esta pessoa já possui um check-in ativo."}
+                )
 
 
 class PatientCompanionCheckin(BaseModel):

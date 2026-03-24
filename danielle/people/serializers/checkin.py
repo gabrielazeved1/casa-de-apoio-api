@@ -11,7 +11,6 @@ class CheckinSerializer(serializers.ModelSerializer):
 
     # aqui apenas chega se tem acompanhante, mas nao checa se ja tem checkin ativo
     def validate(self, data):
-        # check if patient have a companion
         if data["reason"] == "patient":
             if "companion" not in data.keys():
                 raise serializers.ValidationError(
