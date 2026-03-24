@@ -156,3 +156,6 @@ USE_L10N = True
 STATIC_URL = "/static/"
 
 # django_heroku.settings(locals())  # Put it in the last line.
+
+# configuracao exigida pelo Django 3.2+ para silenciar os warnings de AutoField / obrigado
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
