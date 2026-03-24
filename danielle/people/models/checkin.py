@@ -58,9 +58,6 @@ class Checkin(BaseModel):
         max_length=600, blank=True, null=True, verbose_name="Observação"
     )
 
-    # 1 melhoria - apenas um checkin ativo por usuario
-    # apenas cria o checkin como true, mas nao verifica se tem um checkin do usuario ja criado...
-    # gera dados sujos
     active = models.BooleanField(default=True, blank=True, verbose_name="Ativo")
 
     @property
@@ -81,9 +78,19 @@ class Checkin(BaseModel):
 
     def clean(self):
         super().clean()
-        # Melhoria 1: Garante que a lógica de negócio esteja no modelo
+
+        # melhoria 3: bloqueio de Check-in para pessoas em obito
+        if hasattr(self, "person") and self.person and self.person.death_date:
+            raise ValidationError(
+                {
+                    "person": "Não é possível realizar check-in para um paciente em óbito."
+                }
+            )
+
+        # melhoria 1: garante que a logica de negocio esteja no modelo
         if self.active:
-            # Procura por outros check-ins ativos da mesma pessoa, excluindo o próprio objeto se for uma atualização
+            # procura por outros check-ins ativos da mesma pessoa,
+            # excluindo o proprio objeto se for uma atualizacao
             has_active_checkin = (
                 Checkin.objects.filter(person=self.person, active=True)
                 .exclude(pk=self.pk)
