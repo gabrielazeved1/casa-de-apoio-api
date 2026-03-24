@@ -4,10 +4,12 @@ from django.urls import path, include
 from people.views import UserCreate, CustomObtainAuthToken, UserRetrieve
 from rest_framework.authtoken.views import obtain_auth_token
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from people.views.dashboard import DashboardView
 
 urlpatterns = [
     # path('', admin.site.urls),
     path("admin/", admin.site.urls),
+    path("dashboard/", DashboardView.as_view(), name="dashboard"),
     path("api/v1/", include("people.urls")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
