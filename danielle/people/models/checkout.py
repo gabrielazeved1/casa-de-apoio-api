@@ -17,3 +17,10 @@ class Checkout(BaseModel):
 
     def __str__(self):
         return self.checkin.person.name + " " + self.created_at.strftime("%d/%m/%Y")
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # melhoria 2: mudanca de true para false no active apos o checkout
+        if self.checkin.active:
+            self.checkin.active = False
+            self.checkin.save()
