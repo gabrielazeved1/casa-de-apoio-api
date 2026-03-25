@@ -155,6 +155,11 @@ USE_L10N = True
 
 STATIC_URL = "/static/"
 
+# diretórios para arquivos estáticos em desenvolvimento
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
 # django_heroku.settings(locals())  # Put it in the last line.
 
 # configuracao exigida pelo Django 3.2+ para silenciar os warnings de AutoField / obrigado

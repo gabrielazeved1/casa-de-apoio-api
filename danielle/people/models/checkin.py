@@ -87,7 +87,7 @@ class Checkin(BaseModel):
                 }
             )
 
-        # melhoria 1: garante que a logica de negocio esteja no modelo
+        # melhoria 1: bloqueio de checkins duplicados
         if self.active:
             # procura por outros check-ins ativos da mesma pessoa,
             # excluindo o proprio objeto se for uma atualizacao

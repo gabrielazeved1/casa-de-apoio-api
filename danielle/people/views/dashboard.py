@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from people.models import Person, Checkin, HomeServices
 from django.db.models import Count, Q
+from django.db.models.functions import TruncMonth
 import json
 
 
@@ -11,6 +12,20 @@ class DashboardView(View):
         total_people = Person.objects.count()
         active_checkins = Checkin.objects.filter(active=True).count()
         total_services = HomeServices.objects.count()
+
+        # taxa de Ocupação (capacidade maxima estimada: 50 pessoas)
+        max_capacity = 50
+        occupancy_rate = (
+            (active_checkins / max_capacity * 100) if max_capacity > 0 else 0
+        )
+
+        # alertas visuais baseados na ocupação
+        if occupancy_rate >= 90:
+            occupancy_color = "#e74c3c"
+        elif occupancy_rate >= 70:
+            occupancy_color = "#f39c12"
+        else:
+            occupancy_color = "#27ae60"
 
         # 2. dados para o grafico de perfis de check-in (Pizza/Rosca)
         reasons_data = Checkin.objects.values("reason").annotate(total=Count("id"))
@@ -62,6 +77,8 @@ class DashboardView(View):
             "total_people": total_people,
             "active_checkins": active_checkins,
             "total_services": total_services,
+            "occupancy_rate": round(occupancy_rate, 1),
+            "occupancy_color": occupancy_color,
             # json.dumps converte a lista do Python para uma lista do Javascript
             "chart_reasons_labels": json.dumps(chart_reasons_labels),
             "chart_reasons_values": json.dumps(chart_reasons_values),

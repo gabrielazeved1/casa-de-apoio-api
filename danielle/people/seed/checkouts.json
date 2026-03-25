@@ -1,0 +1,39 @@
+[
+  {
+    "model": "people.checkout",
+    "pk": 1,
+    "fields": {
+      "created_at": "2024-03-18T14:00:00Z",
+      "updated_at": "2024-03-18T14:00:00Z",
+      "checkin": 33
+    }
+  },
+  {
+    "model": "people.checkout",
+    "pk": 2,
+    "fields": {
+      "created_at": "2024-03-22T10:00:00Z",
+      "updated_at": "2024-03-22T10:00:00Z",
+      "checkin": 34
+    }
+  },
+
+  {
+    "model": "people.checkout",
+    "pk": 1,
+    "fields": {
+      "created_at": "2024-03-18T14:00:00Z",
+      "updated_at": "2024-03-18T14:00:00Z",
+      "checkin": 33
+    }
+  },
+  {
+    "model": "people.checkout",
+    "pk": 2,
+    "fields": {
+      "created_at": "2024-03-22T10:00:00Z",
+      "updated_at": "2024-03-22T10:00:00Z",
+      "checkin": 34
+    }
+  }
+]
