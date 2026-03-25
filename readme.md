@@ -9,6 +9,7 @@ Bem-vindo ao repositório de revitalização do sistema de Gestão de Usuários 
 3. **Documentação Swagger:** Implementação do `drf-spectacular` gerando rotas interativas para o front-end.
 4. **Dashboard Executivo:** Criação de um painel MVC em tempo real com Chart.js, acessível publicamente, detalhando ocupação e consumo.
 5. **Regras de Negócio e Qualidade de Dados:** Implementação de 4 melhorias cruciais detalhadas abaixo.
+6. **Testes Automatizados:** Cobertura de testes unitários com Pytest para garantir a robustez das regras de negócio implementadas.
 
 ---
 
@@ -73,6 +74,21 @@ Bem-vindo ao repositório de revitalização do sistema de Gestão de Usuários 
 
 ---
 
+## Testes Automatizados com Pytest
+
+Para garantir a qualidade, robustez e a correta implementação das regras de negócio, foram desenvolvidos testes unitários automatizados utilizando `Pytest` e `pytest-django`.
+
+A suíte de testes cobre 100% das 4 melhorias de negócio implementadas, validando os seguintes cenários:
+
+- Bloqueio de múltiplos check-ins ativos para a mesma pessoa.
+- Desativação automática do check-in após a realização de um check-out.
+- Impedimento de check-in para pessoas com data de óbito registrada.
+- Bloqueio de lançamento de serviços da casa para pessoas sem um check-in ativo.
+
+A execução dos testes é simples e pode ser feita com o comando `pytest` na pasta `danielle/`. Isso assegura que futuras alterações no código não quebrem as funcionalidades críticas do sistema, servindo como uma rede de segurança para a evolução do projeto.
+
+---
+
 ## Como instalar e rodar o projeto localmente
 
 Siga o passo a passo abaixo para rodar a aplicação na sua máquina (Requisito: Python 3.12+):
@@ -110,7 +126,7 @@ python manage.py loaddata people/seed/checkins.json
 python manage.py loaddata people/seed/home-services.json
 ```
 
-_Nota: Os seeds preenchem dados antigos. Para testar as novas regras de bloqueios ativas, faça inserções pelo Painel Admin._
+_Nota: Os seeds preenchem dados antigos. Para testar as novas regras de bloqueios ativas, faça inserções pelo Painel Admin ou Swagger._
 
 ### 5. Iniciar a aplicação
 

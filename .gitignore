@@ -1,6 +1,7 @@
 .venv
 myvenv
 templates
+db.sqlite3
 __pycache__
 .pytest_cache
 htmlcov
