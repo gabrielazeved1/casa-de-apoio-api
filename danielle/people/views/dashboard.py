@@ -53,7 +53,7 @@ class DashboardView(View):
             services_agg["sleep"] or 0,
         ]
 
-        # 4. mais informacoes: ultimos 5 check-ins realizados
+        # 4. ultimos 5 check-ins realizados
         recent_checkins = Checkin.objects.select_related("person").order_by(
             "-created_at"
         )[:5]
