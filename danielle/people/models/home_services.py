@@ -25,7 +25,7 @@ class HomeServices(BaseModel):
 
     def clean(self):
         super().clean()
-        # melhoria 4: trava de "servicos da casa" para pessoas sem Check-in Ativo
+        # improvement 4: lock "home services" for people without Active Check-in
         if hasattr(self, "person") and self.person:
             has_active_checkin = Checkin.objects.filter(
                 person=self.person, active=True

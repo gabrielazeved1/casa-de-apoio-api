@@ -8,10 +8,9 @@ class Checkout(BaseModel):
         verbose_name_plural = "Check-out's"
         verbose_name = "Check-out"
 
-    # um checkin para um checkout
-    # se um checkin ja estiver um checkout nao pode apagar
-    # problema-> quando relaciona um checkin com checkout, a coluna active continua com true
-    # 2 melhoria - trocar true -> false
+    # one checkin for one checkout
+    # if a checkin already has a checkout, it cannot be deleted
+    # problem -> when linking a checkin with a checkout, the active column remains true
     checkin = models.OneToOneField(Checkin, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fechado em")
 
@@ -20,7 +19,7 @@ class Checkout(BaseModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        # melhoria 2: mudanca de true para false no active apos o checkout
+        # improvement 2: change from true to false in active after checkout
         if self.checkin.active:
             self.checkin.active = False
             self.checkin.save()

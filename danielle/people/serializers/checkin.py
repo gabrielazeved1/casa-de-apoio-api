@@ -1,5 +1,6 @@
 from people.models import Checkin
 from rest_framework import serializers
+from django.core.exceptions import ValidationError as DjangoValidationError
 
 from people.models import PatientCompanionCheckin
 
@@ -9,7 +10,6 @@ class CheckinSerializer(serializers.ModelSerializer):
     person_name = serializers.CharField(required=False, allow_blank=True)
     formatted_created_at = serializers.CharField(required=False, allow_blank=True)
 
-    # aqui apenas chega se tem acompanhante, mas nao checa se ja tem checkin ativo
     def validate(self, data):
         if data["reason"] == "patient":
             if "companion" not in data.keys():
@@ -21,6 +21,14 @@ class CheckinSerializer(serializers.ModelSerializer):
                     raise serializers.ValidationError(
                         {"companion": "Campo acompanhante não pode ser nulo."}
                     )
+
+        # ensures model clean() business rules are enforced when creating via API
+        instance = Checkin(**data)
+        try:
+            instance.clean()
+        except DjangoValidationError as e:
+            raise serializers.ValidationError(e.message_dict)
+
         return data
 
     class Meta:

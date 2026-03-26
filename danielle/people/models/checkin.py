@@ -79,7 +79,7 @@ class Checkin(BaseModel):
     def clean(self):
         super().clean()
 
-        # melhoria 3: bloqueio de Check-in para pessoas em obito
+        # improvement 3: block Check-in for deceased people
         if hasattr(self, "person") and self.person and self.person.death_date:
             raise ValidationError(
                 {
@@ -87,10 +87,10 @@ class Checkin(BaseModel):
                 }
             )
 
-        # melhoria 1: bloqueio de checkins duplicados
+        # improvement 1: block duplicate check-ins
         if self.active:
-            # procura por outros check-ins ativos da mesma pessoa,
-            # excluindo o proprio objeto se for uma atualizacao
+            # search for other active check-ins for the same person,
+            # excluding the current object if it is an update
             has_active_checkin = (
                 Checkin.objects.filter(person=self.person, active=True)
                 .exclude(pk=self.pk)
